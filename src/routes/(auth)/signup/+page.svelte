@@ -68,6 +68,13 @@
 	</label>
 	<!-- button -->
 	<button class="btn variant-filled-primary w-full">Sign up</button>
+	<!-- OAuth providers -->
+	<p class="text-center">Or sign up with</p>
+	<section class="btn-group variant-ringed-primary [&>*+*]:border-primary-500-400-token">
+		<button disabled formaction="/signin/provider/?provider=google&signup">Google</button>
+		<button disabled formaction="/signin/provider/?provider=apple&signup">Apple</button>
+		<button formaction="/signin/provider/?provider=github&signup">GitHub</button>
+	</section>
 </form>
 <p>Already have an account? <a href="/signin">Signin instead.</a></p>
 

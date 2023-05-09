@@ -173,7 +173,7 @@
 
 	<section class="space-y-6">
 		<h3>Recent snippets</h3>
-		{#each snippets as { language, user, code, date }}
+		{#each snippets as { language, user, code, date, tags }}
 			<div class="space-y-3">
 				<div class="flex-shrink-0">
 					<CodeBlock
@@ -182,6 +182,13 @@
 						buttonCopied="Copied!"
 						background="bg-surface-100-800-token"
 					/>
+				</div>
+				<div class="w-full overflow-hidden">
+					<div class="flex gap-3 overflow-x-scroll hide-scrollbar">
+						{#each tags as tag}
+							<span class="chip text-sm variant-soft-tertiary">{tag}</span>
+						{/each}
+					</div>
 				</div>
 				<div class="flex items-center gap-2">
 					<Avatar initials={getInitials(user)} width="w-10" />
