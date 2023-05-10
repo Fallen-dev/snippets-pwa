@@ -4,19 +4,10 @@
 	let showPassword = false;
 </script>
 
-<h1>Sign up</h1>
-<p>Already have an accoun? <a href="/login" class="link">Login instead.</a></p>
+<h1>Log in</h1>
+<p>Don't have an accoun? <a href="/signup" class="link">Signup instead.</a></p>
 <form>
 	<!-- name -->
-	<div class="form-control">
-		<label class="label" for="">
-			<span class="label-text font-medium text-base">What is your name?</span>
-		</label>
-		<input type="text" placeholder="Type here" class="input input-bordered w-full" />
-		<label class="label" for="">
-			<span class="label-text-alt text-error">Name is required</span>
-		</label>
-	</div>
 	<!-- email -->
 	<div class="form-control">
 		<label class="label" for="">
@@ -30,7 +21,7 @@
 	<!-- password -->
 	<div class="form-control">
 		<label class="label" for="">
-			<span class="label-text font-medium text-base">Create a password</span>
+			<span class="label-text font-medium text-base">Your password</span>
 		</label>
 		<div class="input-group">
 			<input
@@ -69,7 +60,8 @@
 		</label>
 	</div>
 	<!-- submit -->
-	<button class="mt-4 btn btn-block btn-primary">Sign up</button>
+	<button class="mt-4 btn btn-block btn-primary">Login</button>
+	<button class="mt-4 btn btn-block btn-outline">Password free login</button>
 </form>
-<div class="divider py-4">Or sign up with</div>
+<div class="divider py-4">Or login with</div>
 <OauthButtons />
