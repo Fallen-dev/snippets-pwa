@@ -103,18 +103,24 @@
 					<button class="btn btn-sm variant-ghost-error">Sign out</button>
 				</form>
 			</div>
+			<a href="/create">Create</a>
 			<h3>Create your snippets</h3>
 			<input
 				class="input"
 				type="search"
 				name="demo"
 				bind:value={inputSelectLanguage}
-				on:keyup={() => {
+				on:focusin={() => {
 					showAutocompleteBox = true;
+				}}
+				on:focusout={() => {
+					setTimeout(() => {
+						showAutocompleteBox = false;
+					}, 1000);
 				}}
 				placeholder="Search your language"
 			/>
-			{#if showAutocompleteBox && inputSelectLanguage}
+			{#if showAutocompleteBox}
 				<div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" transition:slide>
 					<Autocomplete
 						bind:input={inputSelectLanguage}
