@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.postcss';
-	import Navbar from '../lib/Navbar.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import { fly, type FlyParams } from 'svelte/transition';
 
 	const props = {

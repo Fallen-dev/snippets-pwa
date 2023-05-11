@@ -1,11 +1,10 @@
 <script>
 	import OauthButtons from '$lib/components/OauthButtons.svelte';
-
 	let showPassword = false;
 </script>
 
 <h1>Log in</h1>
-<p>Don't have an accoun? <a href="/signup" class="link">Signup instead.</a></p>
+<p>Don't have an accoun? <a href="/signup" class="link">Create now</a>.</p>
 <form>
 	<!-- name -->
 	<!-- email -->
@@ -61,7 +60,9 @@
 	</div>
 	<!-- submit -->
 	<button class="mt-4 btn btn-block btn-primary">Login</button>
-	<button class="mt-4 btn btn-block btn-outline">Password free login</button>
+	<p class="mt-4">
+		Forget password? Use <a href="/" class="link">password free login</a>.
+	</p>
 </form>
 <div class="divider py-4">Or login with</div>
 <OauthButtons />

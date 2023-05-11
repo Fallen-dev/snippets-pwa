@@ -1,31 +1,96 @@
-<script>
+<script lang="ts">
+	import { enhance, type SubmitFunction } from '$app/forms';
 	import OauthButtons from '$lib/components/OauthButtons.svelte';
+	import { slide } from 'svelte/transition';
+	import { z } from 'zod';
+
+	export let form;
+
+	const user = form?.inputData.user;
+	const email = form?.inputData.email;
+
+	let error = form?.error;
+
+	const signupSchema = z.object({
+		user: z.string().min(1, { message: 'Username is required' }).trim(),
+		email: z
+			.string()
+			.min(1, { message: 'Email is required.' })
+			.email({ message: 'Must be a proper email.' }),
+		password: z
+			.string()
+			.min(1, { message: 'Password is required.' })
+			.min(6, { message: 'Password must be at least 6 characters.' })
+			.trim()
+	});
 
 	let showPassword = false;
+	let loading = false;
+
+	const handleSubmit: SubmitFunction = async (event) => {
+		loading = true;
+		const inputData = {
+			user: event.data.get('user'),
+			email: event.data.get('email'),
+			password: event.data.get('password')
+		};
+
+		try {
+			const { user, email, password } = signupSchema.parse(inputData);
+			// Add db auth here
+		} catch (err: any) {
+			error = form?.error || err?.flatten().fieldErrors;
+			event.cancel();
+			loading = false;
+		}
+
+		return async (event) => {
+			event.update();
+
+			error = null;
+			loading = false;
+		};
+	};
 </script>
 
 <h1>Sign up</h1>
 <p>Already have an accoun? <a href="/login" class="link">Login instead.</a></p>
-<form>
+<form method="post" use:enhance={handleSubmit}>
 	<!-- name -->
 	<div class="form-control">
 		<label class="label" for="">
 			<span class="label-text font-medium text-base">What is your name?</span>
 		</label>
-		<input type="text" placeholder="Type here" class="input input-bordered w-full" />
-		<label class="label" for="">
-			<span class="label-text-alt text-error">Name is required</span>
-		</label>
+		<input
+			type="text"
+			placeholder="Type here"
+			name="user"
+			class="input input-bordered w-full"
+			value={user ?? ''}
+		/>
+		{#if error?.user}
+			<label class="label" for="" transition:slide>
+				<span class="label-text-alt text-error">{error?.user[0]}</span>
+			</label>
+		{/if}
 	</div>
 	<!-- email -->
 	<div class="form-control">
 		<label class="label" for="">
 			<span class="label-text font-medium text-base">Your email</span>
 		</label>
-		<input type="email" placeholder="Type here" class="input input-bordered w-full" />
-		<label class="label" for="">
-			<span class="label-text-alt text-error">Email is required</span>
-		</label>
+		<input
+			type="email"
+			placeholder="Type here"
+			name="email"
+			class="input input-bordered w-full"
+			value={email ?? ''}
+		/>
+		{#if error?.email}
+			<label class="label" for="" transition:slide>
+				<span class="label-text-alt text-error">{error?.email[0]}</span>
+			</label>
+		{/if}
 	</div>
 	<!-- password -->
 	<div class="form-control">
@@ -36,6 +101,7 @@
 			<input
 				type={showPassword ? 'text' : 'password'}
 				placeholder="Type here"
+				name="password"
 				class="input input-bordered border-r-0 w-full"
 			/>
 			<button
@@ -64,12 +130,14 @@
 				</svg>
 			</button>
 		</div>
-		<label class="label" for="">
-			<span class="label-text-alt text-error">Password is required</span>
-		</label>
+		{#if error?.password}
+			<label class="label" for="" transition:slide>
+				<span class="label-text-alt text-error">{error?.password[0]}</span>
+			</label>
+		{/if}
 	</div>
 	<!-- submit -->
-	<button class="mt-4 btn btn-block btn-primary">Sign up</button>
+	<button class="mt-4 btn btn-block btn-primary" class:loading>Sign up</button>
 </form>
 <div class="divider py-4">Or sign up with</div>
 <OauthButtons />
