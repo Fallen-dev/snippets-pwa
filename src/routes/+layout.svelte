@@ -1,15 +1,14 @@
 <script lang="ts">
 	import '../app.postcss';
 	import Navbar from '$lib/components/Navbar.svelte';
-	import { fly, type FlyParams } from 'svelte/transition';
-
-	const props = {
-		duration: 600,
-		y: 600
-	} as FlyParams;
+	import { fly } from 'svelte/transition';
 </script>
 
 <Navbar />
-<div class="min-h-screen max-w-md mx-auto p-4" transition:fly={props}>
+<div
+	class="min-h-screen max-w-md mx-auto p-4"
+	in:fly={{ y: 600, duration: 600 }}
+	out:fly={{ y: 600, duration: 600, delay: 600 }}
+>
 	<slot />
 </div>

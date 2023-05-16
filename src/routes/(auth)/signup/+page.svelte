@@ -6,13 +6,13 @@
 
 	export let form;
 
-	const user = form?.inputData.user;
+	const username = form?.inputData.username;
 	const email = form?.inputData.email;
 
 	let error = form?.error;
 
 	const signupSchema = z.object({
-		user: z.string().min(1, { message: 'Username is required' }).trim(),
+		username: z.string().min(1, { message: 'Username is required.' }).trim(),
 		email: z
 			.string()
 			.min(1, { message: 'Email is required.' })
@@ -29,15 +29,16 @@
 
 	const handleSubmit: SubmitFunction = async (event) => {
 		loading = true;
+
 		const inputData = {
-			user: event.data.get('user'),
+			username: event.data.get('username'),
 			email: event.data.get('email'),
 			password: event.data.get('password')
 		};
 
 		try {
-			const { user, email, password } = signupSchema.parse(inputData);
-			// Add db auth here
+			const { username, email, password } = signupSchema.parse(inputData);
+			console.table({ username, email, password });
 		} catch (err: any) {
 			error = form?.error || err?.flatten().fieldErrors;
 			event.cancel();
@@ -54,23 +55,23 @@
 </script>
 
 <h1>Sign up</h1>
-<p>Already have an accoun? <a href="/login" class="link">Login instead.</a></p>
+<p>Already have an account? <a href="/login" class="link">Login instead</a>.</p>
 <form method="post" use:enhance={handleSubmit}>
-	<!-- name -->
+	<!-- username -->
 	<div class="form-control">
 		<label class="label" for="">
-			<span class="label-text font-medium text-base">What is your name?</span>
+			<span class="label-text font-medium text-base">Username</span>
 		</label>
 		<input
 			type="text"
 			placeholder="Type here"
-			name="user"
+			name="username"
 			class="input input-bordered w-full"
-			value={user ?? ''}
+			value={username ?? ''}
 		/>
-		{#if error?.user}
+		{#if error?.username}
 			<label class="label" for="" transition:slide>
-				<span class="label-text-alt text-error">{error?.user[0]}</span>
+				<span class="label-text-alt text-error">{error?.username[0]}</span>
 			</label>
 		{/if}
 	</div>
@@ -137,7 +138,13 @@
 		{/if}
 	</div>
 	<!-- submit -->
-	<button class="mt-4 btn btn-block btn-primary" class:loading>Sign up</button>
+	<button class="mt-4 btn btn-block btn-primary" class:loading disabled={loading}>
+		{#if loading}
+			Signing up...
+		{:else}
+			Sign up
+		{/if}
+	</button>
 </form>
 <div class="divider py-4">Or sign up with</div>
 <OauthButtons />

@@ -2,7 +2,6 @@ import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 
 const signupSchema = z.object({
-	username: z.string().min(1, { message: 'Username is required.' }).trim(),
 	email: z
 		.string()
 		.min(1, { message: 'Email is required.' })
@@ -17,13 +16,12 @@ const signupSchema = z.object({
 export const actions = {
 	async default(event) {
 		const inputData = Object.fromEntries(await event.request.formData()) as {
-			username: string;
 			email: string;
 			password: string;
 		};
 
 		try {
-			const { username, email, password } = signupSchema.parse(inputData);
+			const { email, password } = signupSchema.parse(inputData);
 		} catch (error: any) {
 			return fail(400, {
 				inputData,
